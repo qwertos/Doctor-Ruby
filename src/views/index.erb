@@ -5,7 +5,15 @@
 	-->
 	<%# TEST VALUES OF ERB %>
 	<%
-		refresh = 3
+		refresh = 30
+		users = []
+		
+		user = {}
+		user[:name] = "bob"
+		user[:location] = :unknown
+		user[:avatar] = "http://localhost:4567/static/ico/apple-touch-icon-144-precomposed.png"
+		user[:visible] = true
+		users.push user
 	%>
 	<%# END TEST %>
 	<head>
@@ -64,7 +72,7 @@
 						<div class="centered span4">
 							
 							<h5><%= user[:name] %></h5>
-							<img class='gravatar' src="<%= user[:gravatar] %>"></img>
+							<img class='gravatar' src="<%= user[:avatar] %>"></img>
 
 							<% if user[:location] == :unknown then %>
 								<p>We're not sure where <%= user[:name] %> is... </p>
