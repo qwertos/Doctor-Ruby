@@ -4,7 +4,10 @@ require 'rubygems'
 require 'xmpp4r/client'
 require 'sinatra'
 require 'erb'
+require 'cobravsmongoose'
+
 require '../config/private/web-config.rb'
+
 include Jabber
 
 
