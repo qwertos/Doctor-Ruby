@@ -2,6 +2,8 @@
 Doctor-Ruby
 ===========
 
+This is a Ruby port of https://github.com/paulmezz/the-doctor-is-in with some extensions added on.
+
 
 ##Dependencies
 
