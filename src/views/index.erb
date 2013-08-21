@@ -55,40 +55,41 @@
 
 		<div class="container">
 
-			<%# TODO: Things and stuff %>
-			<%# users.each do |user| %>
-				<div class="row">
+							<%# TODO: Things and stuff %>
+							<%# users.each do |user| %>
+			<div class="row">
 					
-					<% users.each do |user| %>
-						<% if user[:visible] then %>
-							<div class="centered span4">
+				<% users.each do |user| %>
+					<% if user[:visible] then %>
+						<div class="centered span4">
 							
-								<h5><%= user[:name] %></h5>
-								<img class='gravatar' src="<%= user[:gravatar] %>"></img>
+							<h5><%= user[:name] %></h5>
+							<img class='gravatar' src="<%= user[:gravatar] %>"></img>
 
-								<% if user[:location] == :unknown then %>
-									<p>We're not sure where <%= user[:name] %> is... </p>
-								<% else %>
-									<p>
-										<strong>
-											<%= user[:name] %>
-										</strong>
-										checked in at
-										<strong>
-											<%= user[:location] %>
-										</strong>
-										.
-									</p>
-								<% end %>
-							</div>
-						<% end %>
+							<% if user[:location] == :unknown then %>
+								<p>We're not sure where <%= user[:name] %> is... </p>
+							<% else %>
+								<p>
+									<strong>
+										<%= user[:name] %>
+									</strong>
+									checked in at
+									<strong>
+										<%= user[:location] %>
+									</strong>
+									.
+								</p>
+							<% end %>
+						</div>
 					<% end %>
-				</div>
+				<% end %>
+			</div> <!-- class="row" -->
+		</div> <!-- class="container" -->
 
 
 
 
-
+<!--
 {% if in_data %}
 {% call render_section(in_data) %}
 <div class="row">
@@ -109,14 +110,15 @@
 </div>
 {% endcall %}
 {% endif %}
-
+-->
 <hr>
 
 <footer>
-<p>&copy; Ralph Bean &amp; contributors, 2013</p>
+<p>&copy; Aaron Herting. Port of code &copy; Ralph Bean &amp; contributors, 2013</p>
 <p>This website is free software.  You can find
 the source
-<a href="https://github.com/paulmezz/the-doctor-is-in">here</a></p>
+<a href="https://github.com/qwertos/Doctor-Ruby">here</a>. You can find the original source 
+<a href="https://github.com/paulmezz/the-doctor-is-in">here</a>.</p>
 </footer>
 
 </div> <!-- /container -->
