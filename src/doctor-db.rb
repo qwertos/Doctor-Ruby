@@ -9,6 +9,13 @@ require '../config/private/db-config.rb'
 
 include Jabber
 
+if File.exists?( $SETTINGS[:base_user_db] ) then
+	File.open($SETTINGS[:base_user_db] , 'r' ) do |file|
+		file.each_line do |line|
+			puts line
+		end
+	end
+end
 
 $user_db = []
 
