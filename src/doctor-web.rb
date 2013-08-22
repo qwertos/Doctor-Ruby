@@ -14,12 +14,12 @@ include Jabber
 $user_db = []
 
 local_jid = JID.new $SETTINGS[:jid]
-@xmpp_connection = Client.new local_jid
-@xmpp_connection.connect
-@xmpp_connection.auth $SETTINGS[:password]
-@xmpp_connection.send Presence.new
+$xmpp_connection = Client.new local_jid
+$xmpp_connection.connect
+$xmpp_connection.auth $SETTINGS[:password]
+$xmpp_connection.send Presence.new
 
-@xmpp_connection.add_message_callback do |message|
+$xmpp_connection.add_message_callback do |message|
 	xml = message.body
 	hash = CobraVsMongoose.xml_to_hash xml
 
@@ -46,15 +46,37 @@ end
 
 def refresh_local_db
 	hash = {
-		"method" => "get",
-		"key" => "user_db"
+		"internal" => {
+			"@method" => "get",
+			"@key" => "user_db"
+		}
 	}
 
-	message = Message.new( $SETTINGS[:master_jid], CobraVsMongoose.hash_to_xml( hash ))
-	message.set_type :normal
-	message.set_id '1'
+	message = Message::new( $SETTINGS[:master_jid] )
+	message.body = CobraVsMongoose.hash_to_xml(hash)
+	message.type = :normal
+#	message.subject = "asdf"
+	
+	puts
+	puts
+	puts
+	puts message.inspect
+	puts
+	puts
+	puts message.class
+	puts
+	puts
+	puts message.to_s
+	puts 
+	puts
+	puts hash.inspect
+	puts
+	puts
+	puts CobraVsMongoose.hash_to_xml(hash)
+	puts
+	puts
 
-	@xmpp_connection.send message
+	$xmpp_connection.send message
 end
 
 
