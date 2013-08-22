@@ -72,7 +72,7 @@
 						<div class="centered span4">
 							
 							<h5><%= user['@name'] %></h5>
-							<img class='gravatar' src="<%= avatar_tag(user['@email']) %>"></img>
+							<img class='gravatar' src="<%= generate_gravatar(user['@email']) %>"></img>
 
 							<% if user['@location'] == 'unknown' then %>
 								<p>We're not sure where <%= user['@name'] %> is... </p>
