@@ -5,10 +5,12 @@ require 'xmpp4r/client'
 require 'sinatra'
 require 'erb'
 require 'cobravsmongoose'
+require 'avatar'
 
 require '../config/private/web-config.rb'
 
 include Jabber
+include Avatar::View::ActionViewSupport
 
 
 $user_db = []
