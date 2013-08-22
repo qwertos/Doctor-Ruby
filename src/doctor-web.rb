@@ -61,26 +61,7 @@ def refresh_local_db
 	message = Message::new( $SETTINGS[:master_jid] )
 	message.body = CobraVsMongoose.hash_to_xml(hash)
 	message.type = :normal
-#	message.subject = "asdf"
 	
-	puts
-	puts
-	puts
-	puts message.inspect
-	puts
-	puts
-	puts message.class
-	puts
-	puts
-	puts message.to_s
-	puts 
-	puts
-	puts hash.inspect
-	puts
-	puts
-	puts CobraVsMongoose.hash_to_xml(hash)
-	puts
-	puts
 
 	$xmpp_connection.send message
 end
