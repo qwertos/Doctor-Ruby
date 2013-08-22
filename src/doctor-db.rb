@@ -34,6 +34,9 @@ $xmpp_connection.add_message_callback do |message|
 			when 'get'
 				handle_xmpp_get hash, message.from
 
+			when 'admin'
+				handle_xmpp_admin hash, message.from
+
 			else
 				puts "Is there another xmpp method?"
 		end
@@ -43,10 +46,20 @@ end
 
 def handle_xmpp_post hash, source
 	case hash['internal']['@key']
-		when 'user'
+		when 'user_db'
 			puts hash['internal']['user']
 			$user_db = hash['internal']['user'].clone
 		
+		when 'user'
+			name = hash['internal']['user']['@name']
+			$user_db.each do |user|
+				if user['@name'] == name then
+					hash['internal']['user'].each do |key, value|
+						user[key] = value
+					end
+				end
+			end
+
 		else
 			puts "error"
 	end
@@ -88,6 +101,20 @@ def handle_xmpp_get hash, source
 
 		else
 			"sadf"
+	end
+end
+
+
+def handle_xmpp_admin hash, source
+	case hsah['internal']['@key']
+		when 'save'
+			#TODO: implement
+
+		when 'load'
+			#TODO: implement
+		
+		else
+
 	end
 end
 
