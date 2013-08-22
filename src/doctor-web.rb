@@ -104,7 +104,7 @@ end
 def generate_gravatar email
  
 	# get the email from URL-parameters or what have you and make lowercase
-	email_address = params[:email].downcase
+	email_address = email.downcase
  
 	# create the md5 hash
 	hash = Digest::MD5.hexdigest(email_address)
