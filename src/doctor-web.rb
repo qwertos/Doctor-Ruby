@@ -111,6 +111,8 @@ def generate_gravatar email
 	 
 	# compile URL which can be used in <img src="RIGHT_HERE"...
 	image_src = "http://www.gravatar.com/avatar/#{hash}"
+	
+	return image_src
 end
 
 
