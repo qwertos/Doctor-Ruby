@@ -5,15 +5,15 @@
 	-->
 	<%# TEST VALUES OF ERB %>
 	<%
-		refresh = 30
-		users = []
+		refresh = false
+		users = $user_db
 		
-		user = {}
-		user[:name] = "bob"
-		user[:location] = :unknown
-		user[:avatar] = "http://localhost:4567/static/ico/apple-touch-icon-144-precomposed.png"
-		user[:visible] = true
-		users.push user
+#		user = {}
+#		user['@name'] = "bob"
+#		user['@location'] = :unknown
+#		user['@gravatar'] = "http://localhost:4567/static/ico/apple-touch-icon-144-precomposed.png"
+#		user['@visable'] = true
+#		users.push user
 	%>
 	<%# END TEST %>
 	<head>
@@ -67,23 +67,23 @@
 							<%# users.each do |user| %>
 			<div class="row">
 					
-				<% users.each do |user| %>
-					<% if user[:visible] then %>
+				<% $user_db.each do |user| %>
+					<% if user['@visable'] then %>
 						<div class="centered span4">
 							
-							<h5><%= user[:name] %></h5>
-							<img class='gravatar' src="<%= user[:avatar] %>"></img>
+							<h5><%= user['@name'] %></h5>
+							<img class='gravatar' src="<%= user['@gravatar'] %>"></img>
 
-							<% if user[:location] == :unknown then %>
-								<p>We're not sure where <%= user[:name] %> is... </p>
+							<% if user['@location'] == 'unknown' then %>
+								<p>We're not sure where <%= user['@name'] %> is... </p>
 							<% else %>
 								<p>
 									<strong>
-										<%= user[:name] %>
+										<%= user['@name'] %>
 									</strong>
 									checked in at
 									<strong>
-										<%= user[:location] %>
+										<%= user['@location'] %>
 									</strong>
 									.
 								</p>

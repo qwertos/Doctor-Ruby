@@ -23,17 +23,21 @@ $xmpp_connection.add_message_callback do |message|
 	xml = message.body
 	hash = CobraVsMongoose.xml_to_hash xml
 
-	case hash['method']
-		when 'post'
-			handle_xmpp_post hash
+	unless hash.empty? then
+		puts message.to_s
+		puts hash.inspect
+	
+		case hash['internal']['@method']
+			when 'post'
+				handle_xmpp_post hash
 
-		when 'get'
-			handle_xmpp_get hash
+			when 'get'
+				handle_xmpp_get hash
 		
-		else
-			puts "Is there another xmpp method"
+			else
+				puts "Is there another xmpp method"
+		end
 	end
-			
 end
 
 
@@ -81,9 +85,9 @@ end
 
 
 def handle_xmpp_post hash
-	case hash['key']
+	case hash['internal']['@key']
 		when 'user_db'
-			$user_db = hash['value']
+			$user_db = hash['internal']['user']
 
 		when 'update_exists'
 			refresh_local_db
