@@ -128,6 +128,7 @@ def handle_xmpp_admin hash, source
 			new_user['@location'] = 'unknown'
 			new_user['@email'] = ''
 			new_user['@visible'] = 'false'
+			new_user['@jid'] = ''
 
 			$user_db.push new_user
 
