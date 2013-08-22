@@ -10,4 +10,5 @@ This is a Ruby port of https://github.com/paulmezz/the-doctor-is-in with some ex
 +	xmpp4r
 +	sinatra
 +	cobravsmongoose
++	avatar
 
