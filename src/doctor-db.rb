@@ -9,15 +9,18 @@ require '../config/private/db-config.rb'
 
 include Jabber
 
+$user_db = []
+
 if File.exists?( $SETTINGS[:base_user_db] ) then
+	xml = ""
 	File.open($SETTINGS[:base_user_db] , 'r' ) do |file|
 		file.each_line do |line|
-			puts line
+			xml += line
 		end
 	end
+	$user_db = CobraVsMongoose.xml_to_hash(xml)['save']['user']
 end
 
-$user_db = []
 
 local_jid = JID.new $SETTINGS[:jid]
 $xmpp_connection = Client.new local_jid
@@ -42,6 +45,7 @@ $xmpp_connection.add_message_callback do |message|
 				handle_xmpp_get hash, message.from
 
 			when 'admin'
+				puts "admin admin admin admin admin admin"
 				handle_xmpp_admin hash, message.from
 
 			else
@@ -113,9 +117,9 @@ end
 
 
 def handle_xmpp_admin hash, source
-	case hsah['internal']['@key']
+	case hash['internal']['@key']
 		when 'save'
-			#TODO: implement
+		save
 
 		when 'load'
 			#TODO: implement
@@ -123,6 +127,22 @@ def handle_xmpp_admin hash, source
 		else
 
 	end
+end
+
+
+def save
+	puts "1"
+	to_save = {
+		'save' => {
+			'user' => $user_db
+		}
+	}
+	puts "2"
+
+	File.open($SETTINGS[:base_user_db], 'w') do |file|
+		file.puts CobraVsMongoose.hash_to_xml to_save
+	end
+	puts "3"
 end
 
 Thread.stop
