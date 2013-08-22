@@ -119,7 +119,17 @@ end
 def handle_xmpp_admin hash, source
 	case hash['internal']['@key']
 		when 'save'
-		save
+			save
+
+		when 'add_user'
+			new_user = {}
+			new_user['@name'] = hash['internal']['user']['@name']
+			new_user['@btaddr'] = '00:00:00:00:00:00'
+			new_user['@location'] = 'unknown'
+			new_user['@email'] = ''
+			new_user['@visible'] = 'false'
+
+			$user_db.push new_user
 
 		when 'load'
 			#TODO: implement
