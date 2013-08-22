@@ -68,7 +68,7 @@
 			<div class="row">
 					
 				<% $user_db.each do |user| %>
-					<% if user['@visible'] then %>
+					<% unless user['@visible'] == 'false' then %>
 						<div class="centered span4">
 							
 							<h5><%= user['@name'] %></h5>
