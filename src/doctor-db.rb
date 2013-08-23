@@ -10,6 +10,7 @@ require '../config/private/db-config.rb'
 include Jabber
 
 $user_db = []
+$location_db = []
 
 if File.exists?( $SETTINGS[:base_user_db] ) then
 	xml = ""
@@ -71,6 +72,9 @@ def handle_xmpp_post hash, source
 				end
 			end
 
+		when 'location_update'
+			update_location hash['internal']['user'], source
+
 		else
 			puts "error"
 	end
@@ -78,13 +82,39 @@ def handle_xmpp_post hash, source
 end
 
 
+def update_location users, source
+	update_occured = false
+
+	location = nil
+	$location_db.each do |loc|
+		if loc['@jid'] == source then
+			location = loc
+		end
+	end
+	
+
+	users.each do |user|
+		stored_user = nil
+		$user_db.each do |past_user|
+			if past_user['@name'] == user['@name'] then
+				stored_user = past_user
+			end
+		end
+		
+		if user['@present'] then
+			unless stored_user['@location'] == location['@name'] then
+				update_occured = true
+				stored_user['@location'] = location['@name']
+			end
+		end
+	end
+end
+
+
 
 def handle_xmpp_get hash, source
 	case hash['internal']['@key']
 		when 'user_db'
-			puts
-			puts
-			puts "sending user_db"
 			resp = {
 				'internal' => {
 					'@method' => 'post',
@@ -93,20 +123,24 @@ def handle_xmpp_get hash, source
 				}
 			}
 			
-			puts
-			puts source
-			puts 
-
 			m = Message.new source
 			m.body = CobraVsMongoose.hash_to_xml resp
 			m.type = :normal
 	
-			puts
-			puts
-			puts m.to_s
-			puts
-			puts
-			puts
+			$xmpp_connection.send m
+
+		when 'location_db'
+			resp = {
+				'internal' => {
+					'@method' => 'post',
+					'@key' => 'location_db',
+					'user' => $location_db
+				}
+			}
+
+			m = Message.new source
+			m.body = CobraVsMongoose.hash_to_xml resp
+			m.type = :normal
 
 			$xmpp_connection.send m
 
@@ -132,6 +166,13 @@ def handle_xmpp_admin hash, source
 
 			$user_db.push new_user
 
+		when 'add_location'
+			new_loc = []
+			new_loc['@jid'] = hash['internal']['location']['@jid']
+			new_loc['@name'] = ''
+
+			$location_db.push new_loc
+
 		when 'load'
 			#TODO: implement
 		
@@ -145,7 +186,8 @@ def save
 	puts "1"
 	to_save = {
 		'save' => {
-			'user' => $user_db
+			'user' => $user_db,
+			'location' => $location_db
 		}
 	}
 	puts "2"
