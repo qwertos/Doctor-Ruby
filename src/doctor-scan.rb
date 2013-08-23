@@ -42,6 +42,60 @@ $xmpp_connection.add_message_callback do |message|
 end
 
 
+def handle_xmpp_get hash, source
+	case hash['internal']['@key']
+		
+		else
 
+	end
+end
+
+
+def handle_xmpp_post hash, source
+	case hash['internal']['@key']
+		
+		else
+
+	end
+end
+
+
+def handle_xmpp_admin hash, source
+	case hash['internal']['@key']
+		
+		else
+
+	end
+end
+
+
+def start_poller
+	loop do
+		
+	end
+end
+
+
+# TODO: figure out if i am testing stdout, stderr, or exit value
+def ping addr
+	result = `#{sprintf( $SETTINGS[:cmd], addr )}`
+	return result == 0
+end
+
+def refresh_local_db
+  hash = {
+		"internal" => {
+			"@method" => "get",
+			"@key" => "user_db"
+		}
+	}
+
+  message = Message::new( $SETTINGS[:master_jid] )
+	message.body = CobraVsMongoose.hash_to_xml(hash)
+	message.type = :normal
+  
+
+  $xmpp_connection.send message
+end
 
 
