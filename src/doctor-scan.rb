@@ -9,6 +9,9 @@ require '../config/private/scan-config.rb'
 include Jabber
 
 
+$user_db = []
+$user_db_expired = true
+
 local_jid = JID.new $SETTINGS[:jid]
 $xmpp_connection = Client.new local_jid
 $xmpp_connection.connect
@@ -53,7 +56,10 @@ end
 
 def handle_xmpp_post hash, source
 	case hash['internal']['@key']
-		
+		when 'user_db'
+			$user_db = hash['internal']['user']
+			$user_db_expired = false
+
 		else
 
 	end
@@ -69,9 +75,35 @@ def handle_xmpp_admin hash, source
 end
 
 
-def start_poller
+def start_scanner
 	loop do
+		refresh_local_db
+		while $user_db_expired do
+		end
+
+		users_seen = []
+		$user_db.each do |user|
+			user_presance = {}
+			user_presance['@name'] = user['@name']
+			user_presance['@present'] = ping( user['@btaddr'] )
+			users_seen.push user_presance
+		end
 		
+		hash = {
+			'internal' => {
+				'@method' => 'post',
+				'@key' => 'location_update',
+				'user' => users_seen
+			}
+		}
+
+		message = Message::new( $SETTINGS[:master_jid] )
+		message.body = CobraVsMongoose.hash_to_xml( hash )
+		message.type = :normal
+
+		$xmpp_connection.send message
+
+		$user_db_expired = true
 	end
 end
 
@@ -81,6 +113,7 @@ def ping addr
 	result = `#{sprintf( $SETTINGS[:cmd], addr )}`
 	return result == 0
 end
+
 
 def refresh_local_db
   hash = {
@@ -97,5 +130,6 @@ def refresh_local_db
 
   $xmpp_connection.send message
 end
+
 
 
